@@ -37,4 +37,5 @@ def get_data():
 
 df = get_data()
 st.write("# running stats!")
+st.write("some more text")
 st.dataframe(df)
