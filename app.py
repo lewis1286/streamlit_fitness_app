@@ -3,8 +3,7 @@ import streamlit as st
 from google.oauth2 import service_account
 from gsheetsdb import connect
 
-from bokeh.plotting import figure, show
-from bokeh.sampledata.glucose import data
+from bokeh.plotting import figure
 
 
 
