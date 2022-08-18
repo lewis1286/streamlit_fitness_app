@@ -3,6 +3,11 @@ import streamlit as st
 from google.oauth2 import service_account
 from gsheetsdb import connect
 
+from bokeh.plotting import figure, show
+from bokeh.sampledata.glucose import data
+
+
+
 # Create a connection object.
 credentials = service_account.Credentials.from_service_account_info(
     st.secrets["gcp_service_account"],
@@ -33,9 +38,25 @@ def get_data():
         'avg_hr': [row.Avg_HR for row in rows]
     })
     df['duration (hr)'] = df['distance'] / df['speed']
+    df.sort_values(by='date', inplace=True)
     return df
 
 df = get_data()
-st.write("# running stats!")
-st.write("some more text")
+st.write("# Marathon Training")
+st.write("2022 Portland Marathon Training runs")
+
+
+p = figure(x_axis_type="datetime", title="Running Distances", plot_height=350, plot_width=800)
+p.background_fill_color = "#97ead2"
+p.xgrid.grid_line_color=None
+p.ygrid.grid_line_alpha=0.5
+p.xaxis.axis_label = 'Time'
+p.yaxis.axis_label = 'Value'
+
+p.line(df['date'], df['distance'], width=3, color="#FEA572")
+p.circle(df['date'], df['distance'], size=8, color="#FE640B")
+
+st.bokeh_chart(p)
+
+
 st.dataframe(df)

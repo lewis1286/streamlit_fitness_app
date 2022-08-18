@@ -2,3 +2,4 @@ gsheetsdb==0.1.13.1
 google==3.0.0
 streamlit==1.12.0
 pandas==1.2.5
+bokeh==2.4.3
