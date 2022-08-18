@@ -45,17 +45,40 @@ st.write("# Marathon Training")
 st.write("2022 Portland Marathon Training runs")
 
 
-p = figure(x_axis_type="datetime", title="Running Distances", plot_height=350, plot_width=800)
-p.background_fill_color = "#97ead2"
-p.xgrid.grid_line_color=None
-p.ygrid.grid_line_alpha=0.5
-p.xaxis.axis_label = 'Time'
-p.yaxis.axis_label = 'Distance (mi)'
+def make_distance_plot():
+    p = figure(x_axis_type="datetime", title="Running Distances", plot_height=350, plot_width=800)
+    p.background_fill_color = "#97ead2"
+    p.xgrid.grid_line_color=None
+    p.ygrid.grid_line_alpha=0.5
+    p.xaxis.axis_label = 'Time'
+    p.yaxis.axis_label = 'Distance (mi)'
 
-p.line(df['date'], df['distance'], width=3, color="#FEA572")
-p.circle(df['date'], df['distance'], size=8, color="#FE640B")
+    p.line(df['date'], df['distance'], width=3, color="#FEA572")
+    p.circle(df['date'], df['distance'], size=8, color="#FE640B")
+    return p
 
-st.bokeh_chart(p)
+distance_plot = make_distance_plot()
+st.bokeh_chart(distance_plot)
+
+
+st.write("---")
+st.write("# Heart Rate")
+st.write("Hopefully one would see a descending average heart rate on each run over time.  This is ignoring the fact that higher speeds and distanced yield higher heartrates, as well as hills, temperature.. but over a long enough time-scale, ideally these will average out.")
+
+def make_hr_plot():
+    p = figure(x_axis_type="datetime", title="Average HR", plot_height=350, plot_width=800)
+    p.background_fill_color = "#97ead2"
+    # p.xgrid.grid_line_color=None
+    # p.ygrid.grid_line_alpha=0.8
+    p.xaxis.axis_label = 'Time'
+    p.yaxis.axis_label = 'HR (bpm)'
+
+    p.line(df['date'], df['avg_hr'], width=3, color="#FEA572")
+    p.circle(df['date'], df['avg_hr'], size=8, color="#FE640B")
+    return p
+
+hr_plot = make_hr_plot()
+st.bokeh_chart(hr_plot)
 
 
 st.dataframe(df)
