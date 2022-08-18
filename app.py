@@ -36,4 +36,5 @@ def get_data():
     return df
 
 df = get_data()
+st.write("# running stats!")
 st.dataframe(df)
