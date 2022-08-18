@@ -63,7 +63,7 @@ st.bokeh_chart(distance_plot)
 
 st.write("---")
 st.write("# Heart Rate")
-st.write("Hopefully one would see a descending average heart rate on each run over time.  This is ignoring the fact that higher speeds and distanced yield higher heartrates, as well as hills, temperature.. but over a long enough time-scale, ideally these will average out.")
+st.write("Hopefully one would see a descending average heart rate on each run over time.  This is ignoring the fact that higher speeds and distances yield higher heartrates, as well as hills, temperature.. but over a long enough time-scale, ideally these will average out.")
 
 def make_hr_plot():
     p = figure(x_axis_type="datetime", title="Average HR", plot_height=350, plot_width=800)
