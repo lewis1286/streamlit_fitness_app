@@ -50,7 +50,7 @@ p.background_fill_color = "#97ead2"
 p.xgrid.grid_line_color=None
 p.ygrid.grid_line_alpha=0.5
 p.xaxis.axis_label = 'Time'
-p.yaxis.axis_label = 'Value'
+p.yaxis.axis_label = 'Distance (mi)'
 
 p.line(df['date'], df['distance'], width=3, color="#FEA572")
 p.circle(df['date'], df['distance'], size=8, color="#FE640B")
