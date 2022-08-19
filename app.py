@@ -1,11 +1,8 @@
-import pandas as pd
-
-import streamlit as st
+from bokeh.plotting import figure
 from google.oauth2 import service_account
 from gsheetsdb import connect
-
-from bokeh.plotting import figure
-
+import pandas as pd
+import streamlit as st
 
 
 # Create a connection object.
@@ -28,14 +25,15 @@ def run_query(query):
 sheet_url = st.secrets["private_gsheets_url"]
 rows = run_query(f'SELECT * FROM "{sheet_url}"')
 
+
 @st.cache()
 def get_data():
     # TODO: must be a better way to get rows into dataframe.. see google docs
     df = pd.DataFrame({
-        'date': [row.Date for row in rows],
-        'distance': [row.Distance for row in rows],
-        'speed': [row.Speed for row in rows],
-        'avg_hr': [row.Avg_HR for row in rows]
+        'date': [row.Date for row in rows if row.Activity == 'Run'],
+        'distance': [row.Distance for row in rows if row.Activity == 'Run'],
+        'speed': [row.Speed for row in rows if row.Activity == 'Run'],
+        'avg_hr': [row.Avg_HR for row in rows if row.Activity == 'Run']
     })
     df['duration (hr)'] = df['distance'] / df['speed']
     df.sort_values(by='date', inplace=True)
@@ -44,8 +42,8 @@ def get_data():
     return df
 
 df = get_data()
-st.write("# Marathon Training")
-st.write("2022 Portland Marathon Training runs")
+st.markdown("# Marathon Training")
+st.write("my training runs")
 
 
 def make_distance_plot():
@@ -60,13 +58,18 @@ def make_distance_plot():
     p.circle(df['date'], df['distance'], size=8, color="#FE640B")
     return p
 
+
 distance_plot = make_distance_plot()
 st.bokeh_chart(distance_plot)
 
 
 st.write("---")
-st.write("# Heart Rate")
-st.write("Hopefully one would see a descending average heart rate on each run over time.  This is ignoring the fact that higher speeds and distances yield higher heartrates, as well as hills, temperature.. but over a long enough time-scale, ideally these will average out.")
+st.markdown("## Heart Rate")
+st.write("""
+    Hopefully one would see a descending average heart rate on each run over time.  
+    This is ignoring the fact that higher speeds and distances yield higher heartrates, as well as hills, 
+    temperature.. but over a long enough time-scale, ideally these will average out.
+""")
 
 def make_hr_plot():
     p = figure(x_axis_type="datetime", title="Average HR", plot_height=350, plot_width=800)
@@ -86,4 +89,44 @@ hr_plot = make_hr_plot()
 st.bokeh_chart(hr_plot)
 
 
-st.dataframe(df)
+st.write("---")
+st.markdown("## How it works")
+st.image("assets/overview.png", caption="data flow")
+st.markdown("""
+My runs are recorded on a garmin Fenix 5x wristwatch (GPS, heartrate).  The Garmin app has an API to automatically push 
+activities to Strava, that can be accessed through their UI.  The Strava activities are pushed to a Google sheet using Zapier.
+It would be nice if Garmin exposed an API to Zapier, but not yet and not sure if it's on their roadmap.  This streamlit app reads straight
+from google sheets.  See <a href="https://docs.streamlit.io/knowledge-base/tutorials/databases/public-gsheet"> here </a> for a walkthrough on how it works.
+""", unsafe_allow_html=True)
+
+# FOOTER
+# thanks https://discuss.streamlit.io/t/streamlit-footer/12181
+footer="""
+    <style>
+        a:link , a:visited{
+            color: blue;
+            background-color: transparent;
+            text-decoration: underline;
+        }
+
+        a:hover,  a:active {
+            color: red;
+            background-color: transparent;
+            text-decoration: underline;
+        }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: white;
+            color: black;
+            text-align: center;
+        }
+    </style>
+    <div class="footer">
+    <p>Developed with ❤ by <a style='display: block; text-align: center;' href="https://www.diffusecreation.com" target="_blank">Lewis Guignard</a></p>
+    </div>
+"""
+st.markdown(footer, unsafe_allow_html=True)
