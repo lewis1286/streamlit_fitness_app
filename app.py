@@ -47,7 +47,12 @@ st.write("my training runs")
 
 
 def make_distance_plot():
-    p = figure(x_axis_type="datetime", title="Running Distances", plot_height=350, plot_width=800)
+    p = figure(
+        x_axis_type="datetime", 
+        title="Running Distances", 
+        plot_height=350, plot_width=800,
+        toolbar_location=None
+    )
     p.background_fill_color = "#97ead2"
     p.xgrid.grid_line_color=None
     p.ygrid.grid_line_alpha=0.5
@@ -56,6 +61,7 @@ def make_distance_plot():
 
     p.line(df['date'], df['distance'], width=3, color="#FEA572")
     p.circle(df['date'], df['distance'], size=8, color="#FE640B")
+    p.sizing_mode = "scale_width"
     return p
 
 
@@ -72,7 +78,12 @@ st.write("""
 """)
 
 def make_hr_plot():
-    p = figure(x_axis_type="datetime", title="Average HR", plot_height=350, plot_width=800)
+    p = figure(
+        x_axis_type="datetime", 
+        title="Average HR", 
+        plot_height=350, plot_width=800,
+        toolbar_location=None
+    )
     p.background_fill_color = "#97ead2"
     # p.xgrid.grid_line_color=None
     # p.ygrid.grid_line_alpha=0.8
@@ -83,6 +94,7 @@ def make_hr_plot():
     p.circle(df['date'], df['avg_hr'], size=8, color="#FE640B")
     p.line(df['date'], df['hr_smooth'], width=3, legend_label="HR smoothed")#color="#FEA572")
     p.legend.location = "bottom_left"
+    p.sizing_mode = "scale_width"
     return p
 
 hr_plot = make_hr_plot()
