@@ -1,4 +1,5 @@
 import pandas as pd
+
 import streamlit as st
 from google.oauth2 import service_account
 from gsheetsdb import connect
@@ -38,6 +39,8 @@ def get_data():
     })
     df['duration (hr)'] = df['distance'] / df['speed']
     df.sort_values(by='date', inplace=True)
+    df['hr_smooth'] = df['avg_hr'].rolling(6, win_type='cosine').mean()
+
     return df
 
 df = get_data()
@@ -73,8 +76,10 @@ def make_hr_plot():
     p.xaxis.axis_label = 'Time'
     p.yaxis.axis_label = 'HR (bpm)'
 
-    p.line(df['date'], df['avg_hr'], width=3, color="#FEA572")
+    p.line(df['date'], df['avg_hr'], width=3, color="#FEA572", legend_label="HR (bpm)")
     p.circle(df['date'], df['avg_hr'], size=8, color="#FE640B")
+    p.line(df['date'], df['hr_smooth'], width=3, legend_label="HR smoothed")#color="#FEA572")
+    p.legend.location = "bottom_left"
     return p
 
 hr_plot = make_hr_plot()
