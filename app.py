@@ -59,8 +59,8 @@ def make_distance_plot():
     p.xaxis.axis_label = 'Time'
     p.yaxis.axis_label = 'Distance (mi)'
 
-    p.line(df['date'], df['distance'], width=3, color="#FEA572")
-    p.circle(df['date'], df['distance'], size=8, color="#FE640B")
+    p.line(df['date'], df['distance'], width=2, color="#FEA572")
+    p.circle(df['date'], df['distance'], size=4, color="#FE640B")
     p.sizing_mode = "scale_width"
     return p
 
@@ -90,9 +90,11 @@ def make_hr_plot():
     p.xaxis.axis_label = 'Time'
     p.yaxis.axis_label = 'HR (bpm)'
 
-    p.line(df['date'], df['avg_hr'], width=3, color="#FEA572", legend_label="HR (bpm)")
-    p.circle(df['date'], df['avg_hr'], size=8, color="#FE640B")
-    p.line(df['date'], df['hr_smooth'], width=3, legend_label="HR smoothed")#color="#FEA572")
+    # p.line(df['date'], df['avg_hr'], width=3, color="#FEA572", legend_label="HR (bpm)")
+    p.line(df['date'], df['avg_hr'], width=2, color="#FEA572")
+    p.circle(df['date'], df['avg_hr'], size=4, color="#FE640B")
+    # p.line(df['date'], df['hr_smooth'], width=3, legend_label="HR smoothed")#color="#FEA572")
+    p.line(df['date'], df['hr_smooth'], width=2)
     p.legend.location = "bottom_left"
     p.sizing_mode = "scale_width"
     return p
@@ -141,4 +143,15 @@ footer="""
     <p>Developed with ❤ by <a style='display: block; text-align: center;' href="https://www.diffusecreation.com" target="_blank">Lewis Guignard</a></p>
     </div>
 """
-st.markdown(footer, unsafe_allow_html=True)
+# takes up too much real estate on mobile
+# st.markdown(footer, unsafe_allow_html=True)
+
+
+st.markdown("""
+    ---
+    <div>
+        <p style='display: block; text-align: right;'>
+            Developed with ❤ by <a  href="https://www.diffusecreation.com" target="_blank">Lewis Guignard</a> 
+        </p>
+    </div>
+""", unsafe_allow_html=True)
