@@ -106,11 +106,14 @@ st.bokeh_chart(hr_plot)
 st.write("---")
 st.markdown("## How it works")
 st.image("assets/overview.png", caption="data flow")
-st.markdown("""
+LINK_COLOR="#94D2BD"
+
+st.markdown(f"""
 My runs are recorded on a garmin Fenix 5x wristwatch (GPS, heartrate).  The Garmin app has an API to automatically push 
 activities to Strava, that can be accessed through their UI.  The Strava activities are pushed to a Google sheet using Zapier.
 It would be nice if Garmin exposed an API to Zapier, but not yet and not sure if it's on their roadmap.  This streamlit app reads straight
-from google sheets.  See <a href="https://docs.streamlit.io/knowledge-base/tutorials/databases/public-gsheet"> here </a> for a walkthrough on how it works.
+from google sheets.  See <a href="https://docs.streamlit.io/knowledge-base/tutorials/databases/public-gsheet"> here </a> for a walkthrough 
+on how it works and <a href="https://github.com/lewis1286/streamlit_fitness_app"> here </a> for the code
 """, unsafe_allow_html=True)
 
 # FOOTER
