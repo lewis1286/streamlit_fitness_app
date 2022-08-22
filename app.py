@@ -5,6 +5,7 @@ import pandas as pd
 import streamlit as st
 
 
+# COLORS:  #003f5c, #58508d, #bc5090, #ff6361 and #ffa600
 # Create a connection object.
 credentials = service_account.Credentials.from_service_account_info(
     st.secrets["gcp_service_account"],
@@ -42,31 +43,45 @@ def get_data():
     return df
 
 df = get_data()
-st.markdown("# Marathon Training")
-st.write("my training runs")
+st.markdown("# Marathon Training Runs")
 
+st.vega_lite_chart(df, {
+    'title': {
+        'text': 'Running Distances Over Time',
+        "color": "#2ecc71",
+        "fontSize": 24
+    },
+    'layer': [
+        {
+            'mark': {'type': 'line', 'tooltip': True},
+            'encoding': {
+                'x': {
+                    'field': 'date',
+                    'type': 'temporal',
+                    "title": {
+                        "text": "Run Date",
+                        "color": "#ffa600"
+                    }
+                },
+                'y': {
+                    'field': 'distance',
+                    'type': 'quantitative',
+                    "title": "Distance (mi)"
+                },
+                "color": {"value": "#db646f"}
+            }
+        },
+        {
+            'mark': {'type': 'circle', 'size': '90'},
+            'encoding': {
+                'x': {'field': 'date', 'type': 'temporal'},
+                'y': {'field': 'distance', 'type': 'quantitative'},
+                "color": {"value": "#db646f"}
+            }
+        },
+    ]
+}, use_container_width=True)
 
-def make_distance_plot():
-    p = figure(
-        x_axis_type="datetime", 
-        title="Running Distances", 
-        plot_height=350, plot_width=800,
-        toolbar_location=None
-    )
-    p.background_fill_color = "#97ead2"
-    p.xgrid.grid_line_color=None
-    p.ygrid.grid_line_alpha=0.5
-    p.xaxis.axis_label = 'Time'
-    p.yaxis.axis_label = 'Distance (mi)'
-
-    p.line(df['date'], df['distance'], width=2, color="#FEA572")
-    p.circle(df['date'], df['distance'], size=4, color="#FE640B")
-    p.sizing_mode = "scale_width"
-    return p
-
-
-distance_plot = make_distance_plot()
-st.bokeh_chart(distance_plot)
 
 
 st.write("---")
@@ -77,31 +92,62 @@ st.write("""
     temperature.. but over a long enough time-scale, ideally these will average out.
 """)
 
-def make_hr_plot():
-    p = figure(
-        x_axis_type="datetime", 
-        title="Average HR", 
-        plot_height=350, plot_width=800,
-        toolbar_location=None
-    )
-    p.background_fill_color = "#97ead2"
-    # p.xgrid.grid_line_color=None
-    # p.ygrid.grid_line_alpha=0.8
-    p.xaxis.axis_label = 'Time'
-    p.yaxis.axis_label = 'HR (bpm)'
+st.vega_lite_chart(df,
+    {
+        'title': {
+            'text': 'Average HR',
+            "color": "#2ecc71",
+            "fontSize": 24
+        },
+        "layer": [
+            {
+                "mark": {"type": "line", "tooltip": False},
+                "encoding": {
+                    "x": {
+                        'field': 'date',
+                        'type': 'temporal',
+                        "title": "Run Date"
+                    },
+                    "y": {
+                        "field": "avg_hr",
+                        "type": "quantitative",
+                        "title": "Average Heart Rate (bpm)",
+                        "scale": {"domain": [120, 170]}
+                    },
+                    "color": {"value": "#db646f"}
+                }
+            },
+            {
+                "mark": {"type": "circle", "tooltip": True},
+                "encoding": {
+                    "x": {
+                        "field": "date",
+                        "type": "temporal",
+                    },
+                    "y": {
+                        "field": "avg_hr",
+                        "type": "quantitative"
+                    },
+                    "color": {"value": "#db646f"}
+                }
 
-    # p.line(df['date'], df['avg_hr'], width=3, color="#FEA572", legend_label="HR (bpm)")
-    p.line(df['date'], df['avg_hr'], width=2, color="#FEA572")
-    p.circle(df['date'], df['avg_hr'], size=4, color="#FE640B")
-    # p.line(df['date'], df['hr_smooth'], width=3, legend_label="HR smoothed")#color="#FEA572")
-    p.line(df['date'], df['hr_smooth'], width=2)
-    p.legend.location = "bottom_left"
-    p.sizing_mode = "scale_width"
-    return p
-
-hr_plot = make_hr_plot()
-st.bokeh_chart(hr_plot)
-
+            },
+            {
+                "mark": {"type": "line", "tooltip": False},
+                "encoding": {
+                    "x": {
+                        "field": "date",
+                        "type": "temporal",
+                    },
+                    "y": {
+                        "field": "hr_smooth",
+                        "type": "quantitative"
+                    }
+                }
+            }
+        ]
+    }, use_container_width=True
+)
 
 st.write("---")
 st.markdown("## How it works")

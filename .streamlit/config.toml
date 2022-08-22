@@ -1,8 +1,12 @@
 
 [theme]
-# primaryColor="#ca6702"
-primaryColor="002C3D"
-backgroundColor="#001219"
-secondaryBackgroundColor="#005f73"
-textColor="#e9d8a6"
+primaryColor="#bc5090"
+backgroundColor="#00202e"
+secondaryBackgroundColor="#003f5c"
+textColor="#ffd380"
 font="sans serif"
+
+
+# https://colorkit.co/palette/00202e-003f5c-2c4875-8a508f-bc5090-ff6361-ff8531-ffa600-ffd380/
+# #00202e, #003f5c, #2c4875, #8a508f, #bc5090, #ff6361, #ff8531, #ffa600 and #ffd380.
+# Green: #2ecc71
