@@ -53,7 +53,7 @@ st.vega_lite_chart(df, {
     },
     'layer': [
         {
-            'mark': {'type': 'line', 'tooltip': True},
+            'mark': {'type': 'line'},
             'encoding': {
                 'x': {
                     'field': 'date',
@@ -72,7 +72,7 @@ st.vega_lite_chart(df, {
             }
         },
         {
-            'mark': {'type': 'circle', 'size': '90'},
+            'mark': {'type': 'circle', 'size': '90', 'tooltip': True},
             'encoding': {
                 'x': {'field': 'date', 'type': 'temporal'},
                 'y': {'field': 'distance', 'type': 'quantitative'},
@@ -118,7 +118,7 @@ st.vega_lite_chart(df,
                 }
             },
             {
-                "mark": {"type": "circle", "tooltip": True},
+                "mark": {"type": "circle", "size": 90, "tooltip": True},
                 "encoding": {
                     "x": {
                         "field": "date",
